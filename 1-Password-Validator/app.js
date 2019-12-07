@@ -4,6 +4,7 @@
 //	- be at least 8 characters
 //  - cannot contain spaces
 //  - cannot contain the username
+// If all requirements are met, return true.
 //Otherwise: false
 
 // isValidPassword('89Fjj1nms', 'dogLuvr');  //true
