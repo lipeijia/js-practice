@@ -16,7 +16,17 @@ const input = document.querySelector('input');
 // we have to treat it as though it were in async function.
 const onInput =  async event => {
     const movies = await fetchData(event.target.value);
-    console.log(movies);
+
+    for(movie of movies) {
+        const div = document.createElement('div');
+
+        div.innerHTML = `
+            <img src = "${movie.Poster}" />
+            <p> ${movie.Title}</p>
+        `;
+
+        document.querySelector('.content').appendChild(div);
+    }
     
 };
 
