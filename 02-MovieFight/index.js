@@ -16,14 +16,12 @@ const fetchData = async (searchTerm) => {
 // HTML Generation - root
 const root = document.querySelector('.autocompelete');
 root.innerHTML = `
-<label> search
-for a movie </label>
+<label><b> search for a movie </b></label>
 <div class = "dropdown">
   <div class = "dropdown-trigger">
-    <input class = "input" type = "text" >
+  <input class = "input" / >
     <div class = "dropdown-menu">
-      <div class = "dropdown-content results">
-      </div>
+      <div class = "dropdown-content results"></div>
     </div>
   </div>
 </div>
@@ -45,18 +43,27 @@ const onInput =  async event => {
     }
     // clear search results
     resultsWrapper.innerHTML='';
+
     // HTML Generation - options
     dropdown.classList.add('is-active');
-    for(movie of movies) {
+    for( let movie of movies) {
         const option = document.createElement('a');
         // Handling Broken Images
         const imgSrc = movie.Poster === 'N/A' ? 'https://fakeimg.pl/280x400/' : movie.Poster;
+        
         option.classList.add('dropdown-item');
         option.innerHTML = `
             <img src = "${imgSrc}" />
             <p> ${movie.Title}</p>
         `;
-
+        option.addEventListener('click', () => {
+            // close options
+            dropdown.classList.remove('is-active');
+            // update it to the title of the movie that user clicked on
+            input.value = movie.Title;
+            console.log(movie.Title);
+            
+        });
         resultsWrapper.appendChild(option);
     }
     
