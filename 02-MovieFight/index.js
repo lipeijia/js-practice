@@ -5,7 +5,7 @@ const fetchData = async (searchTerm) => {
             s: searchTerm
         }
     });
-    console.log(response);
+    // console.log(response);
     // Handling Errord Responses
     if (response.data.Error) {
         return [];
@@ -61,7 +61,7 @@ const onInput =  async event => {
             dropdown.classList.remove('is-active');
             // update it to the title of the movie that user clicked on
             input.value = movie.Title;
-            console.log(movie.Title);
+            movieSelected(movie);
             
         });
         resultsWrapper.appendChild(option);
@@ -78,3 +78,14 @@ document.addEventListener('click', event => {
         dropdown.classList.remove('is-active');
     }
 });
+
+const movieSelected = async (movie) => {
+    const response = await axios.get('http://www.omdbapi.com/', {
+        params: {
+            apikey: 'f3ce12d',
+            i: movie.imdbID
+        }
+    });
+    console.log(response.data);
+    
+};
