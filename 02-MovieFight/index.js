@@ -1,21 +1,21 @@
-const fetchData = async (searchTerm) => {
+// call creatAutoComplete from autocomplete.js
+creatAutoComplete({
+  //where to render
+  root: document.querySelector('.autocompelete'),
+  // how to actually fetch a data
+  async fetchData(searchTerm) {
     const response = await axios.get('http://www.omdbapi.com/', {
-        params: {
-            apikey: 'f3ce12d',
-            s: searchTerm
-        }
+      params: {
+        apikey: 'f3ce12d',
+        s: searchTerm
+      }
     });
-    // console.log(response);
-    // Handling Errord Responses
     if (response.data.Error) {
-        return [];
+      return [];
     }
     return response.data.Search;
-};
-
-// autocomplete.js
-creatAutoComplete({
-  root: document.querySelector('.autocompelete'),
+  },
+  // how to show an indivisual item
   renderOption: (movie) => {
     const imgSrc = movie.Poster === 'N/A' ? 'https://fakeimg.pl/280x400/' : movie.Poster;
     return `
@@ -23,9 +23,11 @@ creatAutoComplete({
             <p> ${movie.Title}</p>
         `;
   },
-  onOptionSelect: (movie) => {
+  // what to do when clicks on one
+  onOptionSelect(movie) {
     movieSelected(movie);
   },
+  // what to kind of  backfill inside of the inputs after user clicks on one
   inputValue(movie) {
     return movie.Title;
   }
@@ -33,19 +35,19 @@ creatAutoComplete({
 
 
 const movieSelected = async (movie) => {
-    const response = await axios.get('http://www.omdbapi.com/', {
-        params: {
-            apikey: 'f3ce12d',
-            i: movie.imdbID
-        }
-    });
-    console.log(response.data);
-    document.querySelector('#summary').innerHTML = movieDetail(response.data);
-    
+  const response = await axios.get('http://www.omdbapi.com/', {
+    params: {
+      apikey: 'f3ce12d',
+      i: movie.imdbID
+    }
+  });
+  console.log(response.data);
+  document.querySelector('#summary').innerHTML = movieDetail(response.data);
+
 };
 
 const movieDetail = (movie) => {
-    return `
+  return `
     <article class="media">
       <figure class="media-left">
         <p class="image">

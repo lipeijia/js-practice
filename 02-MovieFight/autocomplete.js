@@ -1,10 +1,14 @@
 const creatAutoComplete = ({
-        root, renderOption, onOptionSelect, inputValue
-    }) => {
+    root,
+    renderOption,
+    onOptionSelect,
+    inputValue,
+    fetchData
+}) => {
 
     root.innerHTML = `
         <div>
-        <label><b> search for a movie </b></label>
+        <label><b>Search</b></label>
         <input class = "input" />
         </div>
         <div class = "dropdown">
@@ -16,33 +20,37 @@ const creatAutoComplete = ({
     const input = root.querySelector('input');
     const dropdown = root.querySelector('.dropdown');
     const resultsWrapper = root.querySelector('.results');
-
-    const onInput = async event => {
-        const movies = await fetchData(event.target.value);
-        // Handling Empty Responses
-        if (!movies.length) {
+    // user typo somthing, fetch data
+    const onInput = async (event) => {
+        // input's value
+        const items = await fetchData(event.target.value);
+        // if no item matches, no dropdown menu
+        if (!items.length) {
             dropdown.classList.remove('is-active');
             return;
         }
-        // clear search results
+        // empty search result
         resultsWrapper.innerHTML = '';
 
-        // HTML Generation - options
+        // search options generate
         dropdown.classList.add('is-active');
-        for (let movie of movies) {
+        for (let item of items) {
+
             const option = document.createElement('a');
-            
 
             option.classList.add('dropdown-item');
-            option.innerHTML = renderOption(movie);
+            // generate contents
+            option.innerHTML = renderOption(item);
+            // add item clicked interation
             option.addEventListener('click', () => {
-                // close options
+                // close dropdown menu
                 dropdown.classList.remove('is-active');
-                // update it to the title of the movie that user clicked on
-                input.value = inputValue(movie);
-                onOptionSelect(movie);
-
+                // update input's value == clicked item's value
+                input.value = inputValue(item);
+                // fetch another full item's data.
+                onOptionSelect(item);
             });
+            // show full item's content
             resultsWrapper.appendChild(option);
         }
 
