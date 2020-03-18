@@ -1,36 +1,48 @@
-// call creatAutoComplete from autocomplete.js
-creatAutoComplete({
-  //where to render
-  root: document.querySelector('.autocompelete'),
+const autoCompleteConfig = {
   // how to actually fetch a data
   async fetchData(searchTerm) {
-    const response = await axios.get('http://www.omdbapi.com/', {
-      params: {
-        apikey: 'f3ce12d',
-        s: searchTerm
+      const response = await axios.get('http://www.omdbapi.com/', {
+        params: {
+          apikey: 'f3ce12d',
+          s: searchTerm
+        }
+      });
+      if (response.data.Error) {
+        return [];
       }
-    });
-    if (response.data.Error) {
-      return [];
-    }
-    return response.data.Search;
-  },
-  // how to show an indivisual item
-  renderOption: (movie) => {
-    const imgSrc = movie.Poster === 'N/A' ? 'https://fakeimg.pl/280x400/' : movie.Poster;
-    return `
+      return response.data.Search;
+    },
+    // how to show an indivisual item
+    renderOption: (movie) => {
+      const imgSrc = movie.Poster === 'N/A' ? 'https://fakeimg.pl/280x400/' : movie.Poster;
+      return `
             <img src = "${imgSrc}" />
             <p> ${movie.Title}</p>
         `;
-  },
-  // what to do when clicks on one
-  onOptionSelect(movie) {
-    movieSelected(movie);
-  },
-  // what to kind of  backfill inside of the inputs after user clicks on one
-  inputValue(movie) {
-    return movie.Title;
-  }
+    },
+    // what to do when clicks on one
+    onOptionSelect(movie) {
+      document.querySelector('.tutorial').classList.add('is-hidden');
+      movieSelected(movie);
+    },
+    // what to kind of  backfill inside of the inputs after user clicks on one
+    inputValue(movie) {
+      return movie.Title;
+    }
+};
+
+
+creatAutoComplete({
+  ...autoCompleteConfig,
+  //where to render
+  root: document.querySelector('#left-autocomplete'),
+  
+});
+creatAutoComplete({
+  ...autoCompleteConfig,
+  //where to render
+  root: document.querySelector('#right-autocomplete'),
+
 });
 
 
