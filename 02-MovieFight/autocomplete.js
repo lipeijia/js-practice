@@ -1,5 +1,5 @@
 const creatAutoComplete = ({
-        root, renderOption
+        root, renderOption, onOptionSelect, inputValue
     }) => {
 
     root.innerHTML = `
@@ -39,8 +39,8 @@ const creatAutoComplete = ({
                 // close options
                 dropdown.classList.remove('is-active');
                 // update it to the title of the movie that user clicked on
-                input.value = movie.Title;
-                movieSelected(movie);
+                input.value = inputValue(movie);
+                onOptionSelect(movie);
 
             });
             resultsWrapper.appendChild(option);
