@@ -1,5 +1,5 @@
 const creatAutoComplete = ({
-        root
+        root, renderOption
     }) => {
 
     root.innerHTML = `
@@ -31,14 +31,10 @@ const creatAutoComplete = ({
         dropdown.classList.add('is-active');
         for (let movie of movies) {
             const option = document.createElement('a');
-            // Handling Broken Images
-            const imgSrc = movie.Poster === 'N/A' ? 'https://fakeimg.pl/280x400/' : movie.Poster;
+            
 
             option.classList.add('dropdown-item');
-            option.innerHTML = `
-            <img src = "${imgSrc}" />
-            <p> ${movie.Title}</p>
-        `;
+            option.innerHTML = renderOption(movie);
             option.addEventListener('click', () => {
                 // close options
                 dropdown.classList.remove('is-active');

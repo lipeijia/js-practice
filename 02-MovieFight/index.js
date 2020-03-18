@@ -15,14 +15,16 @@ const fetchData = async (searchTerm) => {
 
 // autocomplete.js
 creatAutoComplete({
-  root: document.querySelector('.autocompelete')
+  root: document.querySelector('.autocompelete'),
+  renderOption: (movie) => {
+    const imgSrc = movie.Poster === 'N/A' ? 'https://fakeimg.pl/280x400/' : movie.Poster;
+    return `
+            <img src = "${imgSrc}" />
+            <p> ${movie.Title}</p>
+        `;
+  }
 });
-creatAutoComplete({
-  root: document.querySelector('.autocompelete-2')
-});
-creatAutoComplete({
-  root: document.querySelector('.autocompelete-3')
-});
+
 
 const movieSelected = async (movie) => {
     const response = await axios.get('http://www.omdbapi.com/', {
