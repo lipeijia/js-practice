@@ -20,11 +20,7 @@ const autoCompleteConfig = {
             <p> ${movie.Title}</p>
         `;
     },
-    // what to do when clicks on one
-    onOptionSelect(movie) {
-      document.querySelector('.tutorial').classList.add('is-hidden');
-      movieSelected(movie);
-    },
+
     // what to kind of  backfill inside of the inputs after user clicks on one
     inputValue(movie) {
       return movie.Title;
@@ -36,17 +32,26 @@ creatAutoComplete({
   ...autoCompleteConfig,
   //where to render
   root: document.querySelector('#left-autocomplete'),
+  // what to do when clicks on one
+  onOptionSelect(movie) {
+    document.querySelector('.tutorial').classList.add('is-hidden');
+    movieSelected(movie, document.querySelector('#left-summary'));
+  }
   
 });
 creatAutoComplete({
   ...autoCompleteConfig,
   //where to render
   root: document.querySelector('#right-autocomplete'),
-
+  // what to do when clicks on one
+  onOptionSelect(movie) {
+    document.querySelector('.tutorial').classList.add('is-hidden');
+    movieSelected(movie, document.querySelector('#right-summary'));
+  }
 });
 
 
-const movieSelected = async (movie) => {
+const movieSelected = async (movie, summaryElement) => {
   const response = await axios.get('http://www.omdbapi.com/', {
     params: {
       apikey: 'f3ce12d',
@@ -54,7 +59,7 @@ const movieSelected = async (movie) => {
     }
   });
   console.log(response.data);
-  document.querySelector('#summary').innerHTML = movieDetail(response.data);
+  summaryElement.innerHTML = movieDetail(response.data);
 
 };
 
